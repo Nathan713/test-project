@@ -26,26 +26,6 @@ client.connect();
     });
   }
     
-
-app.post('/api/addcard', async (req, res, next) =>
-{
-  // incoming: userId, color
-  // outgoing: error
-  const { userId, card } = req.body;
-  const newCard = {Card:card,UserId:userId};
-  var error = '';
-  try
-  {
-    const db = client.db();
-    const result = db.collection('Cards').insertOne(newCard);
-  }
-  catch(e)
-  {
-    error = e.toString();
-  }
-  var ret = { error: error };
-  res.status(200).json(ret);
-});
 app.post('/api/login', async (req, res, next) => 
 {
   // incoming: login, password
