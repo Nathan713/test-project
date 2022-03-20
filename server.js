@@ -50,7 +50,7 @@ app.post('/api/login', async (req, res, next) =>
 {
   // incoming: login, password
   // outgoing: id, firstName, lastName, error
- var error = '';
+  var error = '';
   const { email, password } = req.body;
   const db = client.db();
   const results = await db.collection('Users').find({Email:email,Password:password}).toArray();
@@ -66,6 +66,24 @@ app.post('/api/login', async (req, res, next) =>
   var ret = { id:id, firstName:fn, lastName:ln, error:''};
   res.status(200).json(ret);
 });
+app.post('/api/register', async (req, res, next) =>
+{
+  var error = '';
+  const {firstname, lastname, email, password} = req.body;
+  const newUser = {FirstName:firstname, LastName:lastname, Email:email,Password:password};
+  try
+  {
+    const db = client.db();
+    const result = db.collection('Users').insertOne(newUser);
+  }
+  catch(e)
+  {
+    error = e.toString();
+  }
+  var ret = { error: error };
+  res.status(200).json(ret);
+});
+
 app.post('/api/searchcards', async (req, res, next) => 
 {
   // incoming: userId, search
